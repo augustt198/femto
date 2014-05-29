@@ -40,6 +40,23 @@ get '/status' do
 end
 ```
 
+### Layouts
+
+You can define application-wide views by using the layout method.
+```ruby
+layout view: 'layout' do
+    # This block would be called every page load
+end
+```
+
+An example layout view:
+```html
+<div class="container">
+    <!-- the yield keyword renders the current view -->
+    <%= yield %>
+</div>
+```
+
 ## Contributing
 
 1. Fork it
