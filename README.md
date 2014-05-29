@@ -57,6 +57,8 @@ An example layout view:
 </div>
 ```
 
+### [Example](https://github.com/augustt198/femto/tree/master/example)
+
 ## Contributing
 
 1. Fork it
