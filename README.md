@@ -66,4 +66,4 @@ An example layout view:
 5. Create new Pull Request
 
 
-_femto_ is the SI prefix for 10^-15
+_femto_ is the SI prefix for 10<sup>-15</sup>
