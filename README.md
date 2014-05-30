@@ -57,7 +57,22 @@ An example layout view:
 </div>
 ```
 
-### [Example](https://github.com/augustt198/femto/tree/master/example)
+### Custom Renderers
+Femto comes with the renderers `:json`, `:pretty_json`, and `:text`, but you can easily
+add custom renderers.
+
+
+For instance:
+```ruby
+Femto::Renderer.renderer :custom do |content|
+    ['text/plain', content.to_s.reverse]
+end
+```
+
+All renderers should return an array with the `Content-Type` at position `[0]`, and the actual content
+at position `[1]`.
+
+### [App Example](https://github.com/augustt198/femto/tree/master/example)
 
 ## Contributing
 
