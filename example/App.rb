@@ -13,7 +13,7 @@ class App < Femto::Base
 
   get '/json' do
     json = {features: {json_rendering: true}}
-    render json: JSON.pretty_generate(json)
+    render pretty_json: json
   end
 
 end

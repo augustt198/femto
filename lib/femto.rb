@@ -1,4 +1,5 @@
 require 'femto/version'
+require 'femto/renderer'
 require 'tilt'
 require 'rack'
 require 'json'
@@ -73,12 +74,10 @@ module Femto
         if options.is_a? Hash
           pair = options.to_a[0]
           type = pair[0]
-          @content_type = 'application/' + type.to_s
           content = pair[1]
-          if type == :json and content.is_a? Hash
-            content = content.to_json
-          end
-          @render = content
+          render_pair = Femto::Renderer.render(type, content)
+          @content_type = render_pair[0]
+          @render = render_pair[1]
         elsif options.is_a? String
           @render = render_template(resolve_template(options))
         end
