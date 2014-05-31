@@ -11,7 +11,7 @@ gem 'femto', github: 'augustt198/femto'
 
 ## Usage
 
-First, set up your views/templates folder:
+First, setup your views/templates folder:
 
 ```ruby
 # For example
@@ -71,7 +71,7 @@ The parameter passed to the block in the `model` method is the `ModelCreator`.
 You can add your own methods to the model:
 ```ruby
 model :user do |m|
-    m.set_method 'confirmed?' { false }
+    m.set_method('confirmed?') { false }
 end
 ```
 
