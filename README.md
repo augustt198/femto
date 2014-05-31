@@ -40,6 +40,48 @@ get '/status' do
 end
 ```
 
+### Models
+To use models, first you need specify the model adapter. `MongoAdapter` is the only model adapter currently:
+
+```ruby
+# Connect to database
+Femto::Model::MongoAdapter.connect host: 'localhost', port: 27107, db: 'test'
+Femto::Model.adapter = Femto::Model::MongoAdapter
+```
+
+Add models with the `model` method, for example:
+```ruby
+model :user do |m|
+    m.field :username
+    m.field :password
+    m.field :created_at
+end
+```
+
+This will create the class `User`. Use the model class to find, update, and insert:
+```ruby
+user = User.new
+user.username = 'foo'
+user.password = 'bar'
+user.save # Saves to database or updates if it already exists
+User.find # => [#<User:0x007fcb5bef8840>]
+```
+
+The parameter passed to the block in the `model` method is the `ModelCreator`.
+You can add your own methods to the model:
+```ruby
+model :user do |m|
+    m.set_method 'confirmed?' { false }
+end
+```
+
+You can also change the storage name of the model. The default is the model name + "s".
+```ruby
+model :category do |m|
+    m.storage :categories
+end
+```
+
 ### Layouts
 
 You can define application-wide views by using the layout method.
