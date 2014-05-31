@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rack', '~> 1.4.5'
   spec.add_dependency 'tilt', '~> 2.0.1'
   spec.add_dependency 'haml', '~> 4.0.4'
+  spec.add_dependency 'mongo', '~> 1.10.0'
 end

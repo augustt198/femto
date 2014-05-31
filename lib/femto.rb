@@ -1,5 +1,7 @@
 require 'femto/version'
 require 'femto/renderer'
+require 'femto/model'
+require 'femto/model/model_adapter'
 require 'tilt'
 require 'rack'
 require 'json'
@@ -81,6 +83,10 @@ module Femto
         elsif options.is_a? String
           @render = render_template(resolve_template(options))
         end
+      end
+
+      def model(name, &block)
+        Femto::Model.create_model name.to_s, &block
       end
 
       def resolve_template(file)

@@ -16,6 +16,7 @@ module Femto
       @renderers[type] = block
     end
 
+    # Setup default renderers
     renderer(:json) { |c| ['application/json', c.to_json] }
     renderer(:pretty_json) { |c| ['application/json', JSON.pretty_generate(c)] }
     renderer(:text) { |c| ['text/plain', c.to_s] }
