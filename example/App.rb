@@ -1,5 +1,4 @@
 require 'femto'
-require 'femto/model/model_adapter'
 
 class App < Femto::Base
 

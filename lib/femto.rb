@@ -1,7 +1,6 @@
 require 'femto/version'
 require 'femto/renderer'
 require 'femto/model'
-require 'femto/model/model_adapter'
 require 'tilt'
 require 'rack'
 require 'json'
