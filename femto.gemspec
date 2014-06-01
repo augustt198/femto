@@ -24,4 +24,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'tilt', '~> 2.0.1'
   spec.add_dependency 'haml', '~> 4.0.4'
   spec.add_dependency 'mongo', '~> 1.10.0'
+  spec.add_dependency 'bson_ext', '~> 1.10.0'
 end
