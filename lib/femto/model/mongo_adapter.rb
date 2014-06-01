@@ -30,7 +30,9 @@ module Femto
         def find(cls, query)
           results = []
           get_coll(cls).find(query).each do |res|
-            results << cls.new(symbolize_keys(res))
+            model = cls.new(symbolize_keys(res))
+            model.id = res['_id']
+            results << model
           end
           results
         end
