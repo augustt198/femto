@@ -18,16 +18,6 @@ module Femto
           end
         end
 
-        def create_from_hash(cls, hash={})
-          obj = cls.new
-          cls.fields.each do |f|
-            val = hash[f.to_s]
-            obj.send(f.to_s + '=', val) if val
-          end
-          obj.send('id=', hash['_id']) if hash['_id']
-          obj
-        end
-
         def to_hash(model)
           result = {}
           model.class.model_attrs[:fields].each do |f|
@@ -40,22 +30,35 @@ module Femto
         def find(cls, query)
           results = []
           get_coll(cls).find(query).each do |res|
-            results << create_from_hash(cls, res)
+            results << cls.new(symbolize_keys(res))
           end
           results
         end
 
         def update(model)
+          coll = get_coll model.class
           if model.id
-            get_coll(model.class).update({:_id => model.id}, to_hash(model))
+            coll.update({:_id => model.id}, model.to_hash)
           else
-            get_coll(model.class).insert to_hash(model)
+            model.id = coll.insert model.to_hash
+          end
+        end
+
+        def delete(model)
+          coll = get_coll model.class
+          if model.id
+            coll.remove(:_id => model.id)
           end
         end
 
         def get_coll(cls)
           @db[cls.model_attrs[:storage_name]]
         end
+
+        def symbolize_keys(hash)
+          hash.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+        end
+
       end
 
     end

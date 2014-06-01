@@ -16,7 +16,7 @@ class App < Femto::Base
     m.field :created_at
     m.set_method('confirmed?') { 42 }
   end
-  
+
   get '/', view: 'home' do
     @time = Time.now
     @number = rand 1000

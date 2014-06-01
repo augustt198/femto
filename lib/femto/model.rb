@@ -41,12 +41,38 @@ module Femto
       model_class.define_singleton_method 'where' do |query={}|
         Model.adapter.find(model_class, query)
       end
+      model_class.define_singleton_method 'create' do |fields={}|
+        model = model_class.new fields
+        model.save
+        model
+      end
+      model_class.define_singleton_method 'all' do
+        model_class.find
+      end
+
       model_class.module_eval do
         define_method 'update' do
           Model.adapter.update self
         end
+
         define_method 'save' do
           Model.adapter.update self
+        end
+
+        define_method 'to_hash' do
+          result = {}
+          self.class.model_attrs[:fields].each do |f|
+            val = send f
+            result[f] = val if val
+          end
+          result
+        end
+
+        define_method 'initialize' do |fields={}|
+          fields.each_pair do |key, val|
+            next unless self.class.model_attrs[:fields].include? key
+            send key.to_s + '=', val
+          end
         end
       end
 
@@ -62,7 +88,6 @@ module Femto
 
       # Create method for getting defined fields
       model_class.define_singleton_method('fields') { model_creator.fields }
-
     end
 
     class ModelCreator
