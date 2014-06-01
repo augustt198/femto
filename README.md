@@ -60,9 +60,7 @@ end
 
 This will create the class `User`. Use the model class to find, update, and insert:
 ```ruby
-user = User.new
-user.username = 'foo'
-user.password = 'bar'
+user = User.new(username: 'foo', password: 'bar')
 user.save # Saves to database or updates if it already exists
 User.find # => [#<User:0x007fcb5bef8840>]
 ```
