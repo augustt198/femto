@@ -46,7 +46,7 @@ module Femto
           end
         end
 
-        def delete(model)
+        def remove(model)
           coll = get_coll model.class
           if model.id
             coll.remove(:_id => model.id)

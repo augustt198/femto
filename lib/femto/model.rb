@@ -59,6 +59,9 @@ module Femto
           Model.adapter.update self
         end
 
+        define_method('remove') { Model.adapter.remove self }
+        define_method('delete') { Model.adapter.remove self }
+
         define_method 'to_hash' do
           result = {}
           self.class.model_attrs[:fields].each do |f|
