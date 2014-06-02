@@ -4,7 +4,11 @@ A tiny web framework.
 
 ## Installation
 
-Add this to your Gemfile:
+```sh
+$ gem install femto
+```
+
+If you're using bundler, add this to your Gemfile:
 ```ruby
 gem 'femto', github: 'augustt198/femto'
 ```
