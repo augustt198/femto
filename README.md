@@ -84,6 +84,13 @@ model :category do |m|
 end
 ```
 
+Fields can be validated before saving by using `ModelCreator#validate`:
+```ruby
+model :user do |m|
+    m.validate(:password) { |val| val.length > 8 }
+end
+```
+
 ### Layouts
 
 You can define application-wide views by using the layout method.
