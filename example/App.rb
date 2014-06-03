@@ -14,12 +14,19 @@ class App < Femto::Base
     m.field :password
     m.field :username
     m.field :created_at
-    m.set_method('confirmed?') { 42 }
+    m.set_method('confirmed?') { false }
+    m.validate :password do |val|
+      val.is_a? String and val.length >= 8
+    end
   end
 
   get '/', view: 'home' do
     @time = Time.now
     @number = rand 1000
+  end
+
+  get '/validations' do
+    User.new(username: 'LoremIpsum', password: 'qwerty').save
   end
 
   get '/json' do
@@ -37,7 +44,7 @@ class App < Femto::Base
   get '/list_users' do
     users = User.find
     results = []
-    users.each { |u| results << u.inspect }
+    users.each { |u| results << u.to_hash }
     render pretty_json: {users: results}
   end
 

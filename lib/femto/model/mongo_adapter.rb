@@ -18,19 +18,10 @@ module Femto
           end
         end
 
-        def to_hash(model)
-          result = {}
-          model.class.model_attrs[:fields].each do |f|
-            var = model.send f
-            result[f] = var if var
-          end
-          result
-        end
-
         def find(cls, query)
           results = []
           get_coll(cls).find(query).each do |res|
-            model = cls.new(symbolize_keys(res))
+            model = cls.new(Femto::Model.symbolize_keys(res))
             model.id = res['_id']
             results << model
           end
@@ -39,6 +30,7 @@ module Femto
 
         def update(model)
           coll = get_coll model.class
+          model.validate
           if model.id
             coll.update({:_id => model.id}, model.to_hash)
           else

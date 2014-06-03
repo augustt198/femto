@@ -6,6 +6,11 @@ module Femto
 
     class << self
       attr_accessor :adapter
+
+      def symbolize_keys(hash)
+        hash.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+      end
+
     end
 
     def self.create_model(name, &block)
@@ -77,6 +82,20 @@ module Femto
             send key.to_s + '=', val
           end
         end
+
+        define_method 'validate' do
+          m_attrs = self.class.model_attrs
+          errs = {}
+          m_attrs[:fields].each do |field|
+            val = send field
+            validations = m_attrs[:validations][field]
+            next unless validations
+            validations.each do |v|
+              errs[field] = val if v.call(val) == false
+            end
+          end
+          raise ValidationException.new("The following fields were not acceptable: #{errs}") unless errs.empty?
+        end
       end
 
       # Model attributes (fields, storage, etc...)
@@ -86,7 +105,8 @@ module Femto
       storage = model_creator.storage_name ? model_creator.storage_name.to_s : name + 's'
       model_class.model_attrs = {
           fields: model_creator.fields,
-          storage_name: storage
+          storage_name: storage,
+          validations: model_creator.validations
       }
 
       # Create method for getting defined fields
@@ -100,12 +120,14 @@ module Femto
       attr_accessor :class_opts
       attr_accessor :custom_methods
       attr_accessor :storage_name
+      attr_accessor :validations
 
       def initialize
         @fields = []
         @defaults = {}
         @types = {}
         @custom_methods = {}
+        @validations = {}
       end
 
       def field(name, options={})
@@ -127,6 +149,13 @@ module Femto
       def storage(name)
         @storage_name = name
       end
+
+      # The validation block should return a boolean value
+      # signifying whether or not the field's value is acceptable
+      def validate(field, &block)
+        @validations[field] = [] unless @validations[:field]
+        @validations[field] << block
+      end
     end
 
     # Taken from http://infovore.org/archives/2006/08/11/writing-your-own-camelizer-in-ruby/
@@ -136,6 +165,15 @@ module Femto
       else
         snake_case.first + camelize(snake_case)[1..-1]
       end
+    end
+
+    class ModelException < Exception
+      def initialize(msg)
+        super msg
+      end
+    end
+
+    class ValidationException < ModelException
     end
 
   end
