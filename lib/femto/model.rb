@@ -56,16 +56,13 @@ module Femto
       end
 
       model_class.module_eval do
-        define_method 'update' do
-          Model.adapter.update self
-        end
-
         define_method 'save' do
           Model.adapter.update self
         end
+        alias_method :update, :save
 
         define_method('remove') { Model.adapter.remove self }
-        define_method('delete') { Model.adapter.remove self }
+        alias_method :delete, :remove
 
         define_method 'to_hash' do
           result = {}
@@ -75,6 +72,7 @@ module Femto
           end
           result
         end
+        alias_method :to_h, :to_hash
 
         define_method 'initialize' do |fields={}|
           fields.each_pair do |key, val|

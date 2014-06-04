@@ -44,7 +44,7 @@ class App < Femto::Base
   get '/list_users' do
     users = User.find
     results = []
-    users.each { |u| results << u.to_hash }
+    users.each { |u| results << u.to_h }
     render pretty_json: {users: results}
   end
 
