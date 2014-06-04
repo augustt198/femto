@@ -94,6 +94,10 @@ module Femto
           end
           raise ValidationException.new("The following fields were not acceptable: #{errs}") unless errs.empty?
         end
+  
+        define_method '[]' do |field|
+          instance_variable_get "@#{field.to_s}"
+        end
       end
 
       # Model attributes (fields, storage, etc...)
