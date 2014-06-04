@@ -104,7 +104,8 @@ module Femto
       model_class.model_attrs = {
           fields: model_creator.fields,
           storage_name: storage,
-          validations: model_creator.validations
+          validations: model_creator.validations,
+          name: name
       }
 
       # Create method for getting defined fields
