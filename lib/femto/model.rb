@@ -40,19 +40,19 @@ module Femto
       end
 
       # Add model methods
-      model_class.define_singleton_method 'find' do |query={}|
-        Model.adapter.find(model_class, query)
-      end
-      model_class.define_singleton_method 'where' do |query={}|
-        Model.adapter.find(model_class, query)
-      end
-      model_class.define_singleton_method 'create' do |fields={}|
-        model = model_class.new fields
-        model.save
-        model
-      end
-      model_class.define_singleton_method 'all' do
-        model_class.find
+      class << model_class
+        def find(query={})
+          Model.adapter.find(self, query)
+        end
+        alias_method :where, :find
+        def create(field={})
+          model = self.new fields
+          model.save
+          model
+        end
+        def all
+          self.find
+        end
       end
 
       model_class.module_eval do
@@ -156,7 +156,7 @@ module Femto
       # The validation block should return a boolean value
       # signifying whether or not the field's value is acceptable
       def validate(field, &block)
-        @validations[field] = [] unless @validations[:field]
+        @validations[field] ||= []
         @validations[field] << block
       end
     end
